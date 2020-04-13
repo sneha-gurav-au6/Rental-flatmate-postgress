@@ -3,7 +3,7 @@ const dotenv = require("dotenv")
 dotenv.config()
 const userRoutes = require("./Routes/userRoutes")
 const propertyRoutes = require("./Routes/propertyRoutes")
-const PORT = PROCESS.ENV.PORT || 5000
+const PORT = process.env.PORT || 5000
 require("./db")
 require("./utils/cloudinary")
 const app = express()
