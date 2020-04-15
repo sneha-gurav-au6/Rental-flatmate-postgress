@@ -50,7 +50,7 @@ const userSchema = {
 
         
     },
-    // },
+  
     favourite: {
         type: Sequelize.STRING
 

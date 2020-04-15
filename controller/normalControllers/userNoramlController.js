@@ -34,22 +34,17 @@ module.exports = {
           const user = await Property.findByPk(fav1[i]);
           arr.push(user);
         }
-    //    else if (fav1[i] == undefined) {
-    //       res.send("Dont have any property addded to your favourite list");
-    //     }
-      
-      }
+        }
       console.log(arr);
       res.json(arr);
     } catch (err) {
       console.log(err.massage);
-      if (err.message == undefined) {
+ 
         res.json({
           message: "You dont have any property added to your favourite list",
           status: 200,
         });
-      }
-      res.status(500).status("server error");
+    
     }
   },
 };

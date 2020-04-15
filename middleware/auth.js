@@ -18,7 +18,7 @@ function authenticate(req, res, next) {
                         console.log(err);
                         return res.status(401).send(err.message);
                     } else {
-                        // This step is made to make sure the succeding middlewares have the access to this data.
+                        
                         req.user = user;
                         next();
                     }
@@ -26,7 +26,8 @@ function authenticate(req, res, next) {
             }
         }).catch(function (err) {
             console.log(err.message)
-        })
+            res.send("Please provide token/correct token")
+        }) 
     } else {
         res.send("Please provide token")
     }

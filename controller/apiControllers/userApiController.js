@@ -6,28 +6,7 @@ const multiparty = require("multiparty")
 const cloudinary = require("cloudinary")
 const jwt = require("jsonwebtoken")
 module.exports = {
-    // register: async function (req, res) {
-    //     const email = await User.findOne({
-    //         where: {
-    //             email: req.body.email
-    //         }
-    //     })
-    //     if (email) return res.send("Email is already existed")
-    //     const user = req.body
-    //     jwt.sign({
-    //         user: user
-    //     }, "secret key", (err, token) => {
-    //         const users = User.create({
-    //             name: req.body.name,
-    //             email: req.body.email,
-    //             password: req.body.password,
-    //             phone_number: req.body.phone_number,
-    //             token: token
-    //         }).then(function (data) {
-    //             res.json(data)
-    //         })
-    //     })
-    // },
+  
     register: async (req, res) => {
         const email = await User.findOne({
             where: {
@@ -60,41 +39,7 @@ module.exports = {
             }
         );
     },
-    // login: function (req, res) {
-    //     const {
-    //         email,
-    //         password
-    //     } = req.body;
-    //     if (!email || !password)
-    //         return res.status(400).send("Incorrect credentials");
-    //     const user = User.findByEmailAndPassword(email, password).then(function (data) {
-    //         var user = User.findByPk(
-    //             data.id, {
-    //                 raw: true
-    //             }
-    //         ).then(function (users) {
-    //             jwt.sign({
-    //                 id: data.id
-    //             }, "secret key", {
-    //                 expiresIn: 60 * 60 * 1
-    //             }, (err, token) => {
-    //                 User.update({
-    //                     token: token
-    //                 }, {
-    //                     returning: true,
-    //                     where: {
-    //                         id: data.id
-    //                     }
-    //                 }).then(function (now) {
-    //                     res.json(now)
-
-    //                 }).catch(function (err) {
-    //                     console.log(err.message)
-    //                 })
-    //             })
-    //         })
-    //     })
-    // },
+    
     login: async function (req, res) {
         const {
             email,
@@ -134,25 +79,10 @@ module.exports = {
             })
         } catch (err) {
             console.log(err);
-            res.send("invalid Credintials");
+            res.status(401).send("Invalid Credintials");
         }
     },
-    // logout: (req, res) => {
-    //     const user = req.user
-    //     User.update({
-    //         token: null
-    //     }, {
-    //         returning: true,
-    //         where: {
-    //             id: user.id
-    //         }
-    //     }).then(function (data) {
-    //         res.json(data)
-    //     }).catch(function (error) {
-    //         console.log(error)
-    //         res.send(err.message)
-    //     })
-    // },
+   
     logout: async (req, res) => {
         const user = req.user;
         try {
@@ -213,25 +143,26 @@ module.exports = {
                     }).then(function (data) {
                         res.json(data)
                     }).catch(function (err) {
+                        res.status(401).send("Invalid token")
                         console.log(err.message)
                     })
                     console.log(user.id)
                 }).catch(function (err) {
+                    res.status(401).send("Invalid token")
                     console.log(err.message)
                 })
             }).catch(function (err) {
+                res.status(401).send("Invalid token")
                 console.log(err.message)
             })
         });
     },
+
     userMyFav: async (req, res) => {
         const user = req.user;
         const property = req.params.property_id;
         console.log(property)
-        // const property2 = property.slice(3);
-
-
-        try {
+     try {
             const data = await User.findByPk(user.id, {
                 raw: true,
             });
@@ -256,22 +187,22 @@ module.exports = {
         const userid = user1.id;
         try {
             const user1id = await User.findByPk(userid);
-            // console.log(user1id)
+         
 
             const userName = user1id.name;
             const userEMAIL = user1id.email;
-            // console.log(email)
+        
             const id = req.params.property_id;
             
 
             const property = await Property.findByPk(id);
             console.log(property);
-            // const phone_number = property.phone_number;
+        
             const name = property.property_title;
             const location = property.property_location;
             const ownerid = property.user;
             const owner = await User.findByPk(ownerid);
-            // console.log(owner);
+           
             const owner_name = owner.name;
             const owner_eamil = owner.email;
             const owner_phone = owner.phone_number;
@@ -279,7 +210,7 @@ module.exports = {
             var transport = nodemailer.createTransport(
                 smtpTransport({
                     service: "Gmail",
-                    // debug : process.env.NODE_ENV === "development" ,
+                  
                     host: "smtp.gmail.com",
                     port: 587,
                     secure: false,
@@ -299,8 +230,7 @@ module.exports = {
      You have requested for the property ${name} and location ${location} ,the owner details are given below name:
     owner namea: ${owner_name} ,owner-email address: ${owner_eamil} , owner phone-number:${owner_phone}"`,
             };
-            // this.name,email,phonenumber,proprty_deposit
-
+           
             transport.sendMail(mailoptions, function (err, data) {
                 if (err) {
                     console.log(err);
@@ -322,6 +252,6 @@ module.exports = {
         } catch (err) {
             console.log(err.massage)
             res.send("server error")
-        }
+        } 
     }
 }

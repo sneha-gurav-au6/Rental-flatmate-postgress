@@ -20,13 +20,6 @@ app.use(userRoutes)
 app.use(propertyRoutes)
 
 
-
-
-
-
-
-//const app = require("./app")
-
 app.listen(PORT , () => {
     console.log("server started")
 })
